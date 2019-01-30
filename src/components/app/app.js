@@ -9,12 +9,20 @@ export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      skipRandom: false
+      skipRandom: false,
+      selectedChar: 130
     };
-    this.onSkipShar = this.onSkipShar.bind(this);
+    this.onSkipChar = this.onSkipChar.bind(this);
   }
 
-  onSkipShar() {
+
+  onCharSelected = (id) => {
+    this.setState({
+      selectedChar: id
+    })
+  };
+
+  onSkipChar() {
     this.setState(({ skipRandom }) => {
       return {
         skipRandom: !skipRandom
@@ -24,6 +32,8 @@ export default class App extends React.Component {
 
   render() {
     const { skipRandom } = this.state;
+    const buttonText = skipRandom ? "Show Random" : "Skip Random";
+    const randomChar = skipRandom ? null : <RandomChar/>
     return (
       <>
         <Container>
@@ -32,18 +42,20 @@ export default class App extends React.Component {
         <Container>
           <Row>
             <Col lg={{ size: 5, offset: 0 }}>
-              <RandomChar
-                skipRandom={skipRandom}
-                onSkipShar={this.onSkipShar}
-              />
+              {randomChar}
+              <button className='btn btn-primary mb-4'
+                      onClick={this.onSkipChar}
+              >
+                {buttonText}
+              </button>
             </Col>
           </Row>
           <Row>
             <Col md="6">
-              <ItemList />
+              <ItemList onCharSelected={this.onCharSelected}/>
             </Col>
             <Col md="6">
-              <CharDetails />
+              <CharDetails charId={this.state.selectedChar}/>
             </Col>
           </Row>
         </Container>

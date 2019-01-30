@@ -14,7 +14,7 @@ export default class GotService {
   }
 
   async getAllCharacters() {
-    const result = await this.getResource("/characters?page=5pageSize=10");
+    const result = await this.getResource("/characters?page=5&pageSize=10");
     return result.map(this._transformCharacter);
   }
 
@@ -45,7 +45,8 @@ export default class GotService {
       gender: char.gender,
       born: char.born,
       died: char.died,
-      culture: char.culture
+      culture: char.culture,
+      id: char.url.split('/').reverse()[0]
     };
   }
 

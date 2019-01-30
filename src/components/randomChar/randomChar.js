@@ -21,7 +21,8 @@ const Term = styled.span`
 export default class RandomChar extends Component {
   constructor(props) {
     super(props);
-    this.updateChar();
+
+    console.log('Constructor')
   }
 
   gotService = new gotService();
@@ -31,6 +32,15 @@ export default class RandomChar extends Component {
     loading: true,
     error: false
   };
+
+  componentDidMount() {
+    this.updateChar();
+    this.timerId = setInterval(this.updateChar, 1500)
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.timerId);
+  }
 
   onCharLoded = char => {
     this.setState({ char, loading: false });
@@ -43,7 +53,7 @@ export default class RandomChar extends Component {
     });
   };
 
-  updateChar() {
+  updateChar = () => {
     const id = Math.floor(Math.random() * 140 + 25);
     this.gotService
       .getCharacter(id)
@@ -52,30 +62,22 @@ export default class RandomChar extends Component {
   }
 
   render() {
+
+    console.log('Render')
+
     const { char, loading, error } = this.state;
-    const { skipRandom, onSkipShar } = this.props;
 
     const errorMesage = error ? <ErrorMessage /> : null;
     const spinner = loading ? <Spinner /> : null;
-    const content = !(loading || error || skipRandom) ? (
+    const content = !(loading || error) ? (
       <View char={char} />
     ) : null;
-    const buttonText = skipRandom ? "Show Random" : "Skip Random";
     return (
-      <>
         <RandomBlock className="rounded">
           {errorMesage}
           {spinner}
           {content}
         </RandomBlock>
-        <button
-          onClick={() => {
-            onSkipShar();
-          }}
-        >
-          {buttonText}
-        </button>
-      </>
     );
   }
 }
