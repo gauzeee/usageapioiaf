@@ -4,37 +4,50 @@ import Header from "../header";
 import RandomChar from "../randomChar";
 import ItemList from "../itemList";
 import CharDetails from "../charDetails";
-import GotService from "../../services/gotService";
 
-const get = new GotService();
+export default class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      skipRandom: false
+    };
+    this.onSkipShar = this.onSkipShar.bind(this);
+  }
 
-get.getAllBooks().then(books => {
-  console.log(books);
-});
+  onSkipShar() {
+    this.setState(({ skipRandom }) => {
+      return {
+        skipRandom: !skipRandom
+      };
+    });
+  }
 
-const App = () => {
-  return (
-    <>
-      <Container>
-        <Header />
-      </Container>
-      <Container>
-        <Row>
-          <Col lg={{ size: 5, offset: 0 }}>
-            <RandomChar />
-          </Col>
-        </Row>
-        <Row>
-          <Col md="6">
-            <ItemList />
-          </Col>
-          <Col md="6">
-            <CharDetails />
-          </Col>
-        </Row>
-      </Container>
-    </>
-  );
-};
-
-export default App;
+  render() {
+    const { skipRandom } = this.state;
+    return (
+      <>
+        <Container>
+          <Header />
+        </Container>
+        <Container>
+          <Row>
+            <Col lg={{ size: 5, offset: 0 }}>
+              <RandomChar
+                skipRandom={skipRandom}
+                onSkipShar={this.onSkipShar}
+              />
+            </Col>
+          </Row>
+          <Row>
+            <Col md="6">
+              <ItemList />
+            </Col>
+            <Col md="6">
+              <CharDetails />
+            </Col>
+          </Row>
+        </Container>
+      </>
+    );
+  }
+}
