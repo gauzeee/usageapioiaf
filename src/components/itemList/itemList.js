@@ -37,6 +37,12 @@ export default class ItemList extends Component {
         })
     }
 
+    componentDidCatch(error, errorInfo) {
+        this.setState({
+            error: true
+        })
+    }
+
     onError = err => {
         this.setState({
             error: true,

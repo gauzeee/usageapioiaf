@@ -2,25 +2,27 @@ import React from "react";
 import { Col, Row, Container } from "reactstrap";
 import Header from "../header";
 import RandomChar from "../randomChar";
-import ItemList from "../itemList";
-import CharDetails from "../charDetails";
+import ErrorMessage from "../errorMessage";
+import CharacterPage from "../characterPage";
 
 export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       skipRandom: false,
-      selectedChar: 130
+      error: false
     };
     this.onSkipChar = this.onSkipChar.bind(this);
   }
 
 
-  onCharSelected = (id) => {
-    this.setState({
-      selectedChar: id
-    })
-  };
+  componentDidCatch(error, errorInfo) {
+    console.log(error, errorInfo);
+    this.setState(({
+      error: true
+    }))
+  }
+
 
   onSkipChar() {
     this.setState(({ skipRandom }) => {
@@ -34,6 +36,9 @@ export default class App extends React.Component {
     const { skipRandom } = this.state;
     const buttonText = skipRandom ? "Show Random" : "Skip Random";
     const randomChar = skipRandom ? null : <RandomChar/>
+
+    if(this.state.error) return <ErrorMessage/>;
+
     return (
       <>
         <Container>
@@ -50,14 +55,7 @@ export default class App extends React.Component {
               </button>
             </Col>
           </Row>
-          <Row>
-            <Col md="6">
-              <ItemList onCharSelected={this.onCharSelected}/>
-            </Col>
-            <Col md="6">
-              <CharDetails charId={this.state.selectedChar}/>
-            </Col>
-          </Row>
+          <CharacterPage/>
         </Container>
       </>
     );
