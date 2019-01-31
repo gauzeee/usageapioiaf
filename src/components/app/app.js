@@ -5,25 +5,23 @@ import RandomChar from "../randomChar";
 import ErrorMessage from "../errorMessage";
 import CharacterPage from "../characterPage";
 import ItemList from "../itemList";
-import CharDetails from '../charDetails'
+import CharDetails from "../charDetails";
 import gotService from "../../services/gotService";
 
 export default class App extends React.Component {
   state = {
-      skipRandom: false,
-      error: false
-    };
-
+    skipRandom: false,
+    error: false
+  };
 
   gotService = new gotService();
 
   componentDidCatch(error, errorInfo) {
     console.log(error, errorInfo);
-    this.setState(({
+    this.setState({
       error: true
-    }))
+    });
   }
-
 
   onSkipChar = () => {
     this.setState(({ skipRandom }) => {
@@ -36,9 +34,9 @@ export default class App extends React.Component {
   render() {
     const { skipRandom } = this.state;
     const buttonText = skipRandom ? "Show Random" : "Skip Random";
-    const randomChar = skipRandom ? null : <RandomChar/>
+    const randomChar = skipRandom ? null : <RandomChar />;
 
-    if(this.state.error) return <ErrorMessage/>;
+    if (this.state.error) return <ErrorMessage />;
 
     return (
       <>
@@ -49,30 +47,37 @@ export default class App extends React.Component {
           <Row>
             <Col lg={{ size: 5, offset: 0 }}>
               {randomChar}
-              <button className='btn btn-primary mb-4'
-                      onClick={this.onSkipChar}
+              <button
+                className="btn btn-primary mb-4"
+                onClick={this.onSkipChar}
               >
                 {buttonText}
               </button>
             </Col>
           </Row>
-          <CharacterPage/>
-          <Row>
+          <CharacterPage />
+          {/* <Row>
             <Col md="6">
-              <ItemList onCharSelected={this.onCharSelected} getData={this.gotService.getAllHouses}/>
+              <ItemList
+                onCharSelected={this.onCharSelected}
+                getData={this.gotService.getAllHouses}
+              />
             </Col>
             <Col md="6">
-              {/*<CharDetails charId={this.state.selectedChar}/>*/}
-            </Col>
-          </Row>
-          <Row>
-            <Col md="6">
-              <ItemList onCharSelected={this.onCharSelected} getData={this.gotService.getAllBooks}/>
-            </Col>
-            <Col md="6">
-              {/*<CharDetails charId={this.state.selectedChar}/>*/}
+              <CharDetails charId={this.state.selectedChar} />
             </Col>
           </Row>
+          <Row>
+            <Col md="6">
+              <ItemList
+                onCharSelected={this.onCharSelected}
+                getData={this.gotService.getAllBooks}
+              />
+            </Col>
+            <Col md="6">
+              <CharDetails charId={this.state.selectedChar} />
+            </Col>
+          </Row> */}
         </Container>
       </>
     );
