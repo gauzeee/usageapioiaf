@@ -4,17 +4,18 @@ import Header from "../header";
 import RandomChar from "../randomChar";
 import ErrorMessage from "../errorMessage";
 import CharacterPage from "../characterPage";
+import ItemList from "../itemList";
+import CharDetails from '../charDetails'
+import gotService from "../../services/gotService";
 
 export default class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
+  state = {
       skipRandom: false,
       error: false
     };
-    this.onSkipChar = this.onSkipChar.bind(this);
-  }
 
+
+  gotService = new gotService();
 
   componentDidCatch(error, errorInfo) {
     console.log(error, errorInfo);
@@ -24,13 +25,13 @@ export default class App extends React.Component {
   }
 
 
-  onSkipChar() {
+  onSkipChar = () => {
     this.setState(({ skipRandom }) => {
       return {
         skipRandom: !skipRandom
       };
     });
-  }
+  };
 
   render() {
     const { skipRandom } = this.state;
@@ -56,6 +57,22 @@ export default class App extends React.Component {
             </Col>
           </Row>
           <CharacterPage/>
+          <Row>
+            <Col md="6">
+              <ItemList onCharSelected={this.onCharSelected} getData={this.gotService.getAllHouses}/>
+            </Col>
+            <Col md="6">
+              {/*<CharDetails charId={this.state.selectedChar}/>*/}
+            </Col>
+          </Row>
+          <Row>
+            <Col md="6">
+              <ItemList onCharSelected={this.onCharSelected} getData={this.gotService.getAllBooks}/>
+            </Col>
+            <Col md="6">
+              {/*<CharDetails charId={this.state.selectedChar}/>*/}
+            </Col>
+          </Row>
         </Container>
       </>
     );

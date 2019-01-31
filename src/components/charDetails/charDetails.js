@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import styled from "styled-components";
 import gotService from "../../services/gotService";
 import Spinner from "../spinner";
-import ErrorMessage from "../randomChar/randomChar";
+import ErrorMessage from "../errorMessage";
 
 const CharDetailsBlock = styled.div`
   background-color: #fff;
