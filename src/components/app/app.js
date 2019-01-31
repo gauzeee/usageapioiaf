@@ -59,7 +59,7 @@ export default class App extends React.Component {
           {/* <Row>
             <Col md="6">
               <ItemList
-                onCharSelected={this.onCharSelected}
+                onItemSelected={this.onItemSelected}
                 getData={this.gotService.getAllHouses}
               />
             </Col>
@@ -70,7 +70,7 @@ export default class App extends React.Component {
           <Row>
             <Col md="6">
               <ItemList
-                onCharSelected={this.onCharSelected}
+                onItemSelected={this.onItemSelected}
                 getData={this.gotService.getAllBooks}
               />
             </Col>
