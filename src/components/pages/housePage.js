@@ -1,9 +1,9 @@
 import React from "react";
-import ItemList from "../../itemList";
-import ItemDetails, { Field } from "../../itemDetails";
-import ErrorMessage from "../../errorMessage";
-import gotService from "../../../services/gotService";
-import RowBlock from "../../rowBlock";
+import ItemList from "../itemList";
+import ItemDetails, { Field } from "../itemDetails";
+import ErrorMessage from "../errorMessage";
+import gotService from "../../services/gotService";
+import RowBlock from "../rowBlock";
 
 export default class HousePage extends React.Component {
     gotService = new gotService();

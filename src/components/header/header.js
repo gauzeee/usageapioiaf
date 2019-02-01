@@ -39,17 +39,17 @@ export default  class Header extends React.Component {
                 </HeaderTitle>
                 <HeaderLinks>
                     <li>
-                        <Link to="/characters" onClick={() => {
+                        <Link to="/characters/" onClick={() => {
                             this.props.openPage("Character")
                         }} >Characters</Link>
                     </li>
                     <li>
-                        <Link to="/houses" onClick={() => {
+                        <Link to="/houses/" onClick={() => {
                             this.props.openPage("House")
                         }} href="#">Houses</Link>
                     </li>
                     <li>
-                        <Link to="/books" onClick={() => {
+                        <Link to="/books/" onClick={() => {
                             this.props.openPage("Book")
                         }} href="#">Books</Link>
                     </li>

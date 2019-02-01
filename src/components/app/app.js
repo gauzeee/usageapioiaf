@@ -1,11 +1,9 @@
 import React from "react";
-import { Col, Row, Container } from "reactstrap";
+import { Container } from "reactstrap";
 import Header from "../header";
 import RandomChar from "../randomChar";
 import ErrorMessage from "../errorMessage";
-import CharacterPage from "../pages/characterPage";
-import BookPage from "../pages/bookPage";
-import HousePage from "../pages/housePage/housePage";
+import {CharacterPage, BookPage, BookItem, HousePage} from '../pages'
 import gotService from "../../services/gotService";
 import {BrowserRouter as Router, Route} from 'react-router-dom';
 
@@ -14,7 +12,7 @@ export default class App extends React.Component {
   gotService = new gotService();
 
   state = {
-    currentPage: 'Characters',
+    currentPage: 'Main',
     skipRandom: false,
     error: false
   };
@@ -92,8 +90,13 @@ export default class App extends React.Component {
             {buttonText}
           </button>
           <Route path="/characters" component={CharacterPage}/>
-          <Route path="/books" component={BookPage}/>
+
           <Route path="/houses" component={HousePage}/>
+          <Route path="/books" exact component={BookPage}/>
+          <Route path="/books/:id" render={({match}) => {
+            const {id} = match.params;
+            return <BookItem bookId={id}/>
+          }}/>
 
         </Container>
         </div>

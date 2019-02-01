@@ -79,6 +79,7 @@ export default class RandomChar extends Component {
   render() {
 
       if (this.state.error) return <ErrorMessage />;
+      if(this.props.page === "Main") return null;
 
     console.log('Render');
 
