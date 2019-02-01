@@ -26,27 +26,34 @@ const HeaderLinks = styled.ul`
     }
 `;
 
-const Header = () => {
-    return (
-        <HeaderBlock>
-            <HeaderTitle>
+export default  class Header extends React.Component {
+
+    render() {
+        return (
+            <HeaderBlock>
+                <HeaderTitle>
                 <span>
                 Game of Thrones DB
                 </span>
-            </HeaderTitle>
-            <HeaderLinks>
-                <li>
-                    <a href="#">Characters</a>
-                </li>
-                <li>
-                    <a href="#">Houses</a>
-                </li>
-                <li>
-                    <a href="#">Books</a>   
-                </li>
-            </HeaderLinks>
-        </HeaderBlock>
-    );
+                </HeaderTitle>
+                <HeaderLinks>
+                    <li>
+                        <a onClick={() => {
+                            this.props.openPage("Character")
+                        }} href="#">Characters</a>
+                    </li>
+                    <li>
+                        <a onClick={() => {
+                            this.props.openPage("House")
+                        }} href="#">Houses</a>
+                    </li>
+                    <li>
+                        <a onClick={() => {
+                            this.props.openPage("Book")
+                        }} href="#">Books</a>
+                    </li>
+                </HeaderLinks>
+            </HeaderBlock>
+        );
+    }
 };
-
-export default Header;

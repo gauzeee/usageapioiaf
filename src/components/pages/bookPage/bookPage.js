@@ -9,7 +9,7 @@ export default class BookPage extends React.Component {
     gotService = new gotService();
 
     state = {
-        bookId: 10,
+        bookId: 1,
         error: false
     };
 

@@ -38,6 +38,7 @@ export default class GotService {
   };
 
   getBook = async id => {
+    if (id > 10) id = 1;
     const result = await this.getResource(`/books/${id}`);
     return this._transformBook(result);
   };

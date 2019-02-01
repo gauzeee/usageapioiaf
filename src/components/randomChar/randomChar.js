@@ -3,6 +3,8 @@ import styled from "styled-components";
 import gotService from "../../services/gotService";
 import Spinner from "../spinner";
 import ErrorMessage from "../errorMessage";
+import {Col, Row} from "reactstrap";
+import ItemDetails, {Field} from "../itemDetails";
 
 const RandomBlock = styled.div`
   background-color: #fff;
@@ -28,7 +30,7 @@ export default class RandomChar extends Component {
   gotService = new gotService();
 
   state = {
-    char: {},
+    item: {},
     loading: true,
     error: false
   };
@@ -42,8 +44,8 @@ export default class RandomChar extends Component {
     clearInterval(this.timerId);
   }
 
-  onCharLoded = char => {
-    this.setState({ char, loading: false });
+  onCharLoded = item => {
+    this.setState({ item, loading: false });
   };
 
   onError = err => {
@@ -54,58 +56,85 @@ export default class RandomChar extends Component {
   };
 
   updateChar = () => {
-    const id = Math.floor(Math.random() * 140 + 25);
-    this.gotService
-      .getCharacter(id)
+    let id = Math.floor(Math.random() * 120 + 25);
+    const {page} = this.props;
+    let getData;
+    switch (page) {
+        case "Book" :
+            getData = this.gotService.getBook;
+            id = id > 10 ?  Math.floor(Math.random() * (10 - 1)) + 1 : 1
+            break;
+        case "House" :
+            getData = this.gotService.getHouse;
+            break;
+        default :
+            getData = this.gotService.getCharacter;
+            break;
+      }
+    getData(id)
       .then(this.onCharLoded)
       .catch(this.onError);
-  }
+  };
 
   render() {
 
-    console.log('Render')
+      if (this.state.error) return <ErrorMessage />;
 
-    const { char, loading, error } = this.state;
+    console.log('Render');
+
+    const { item, loading, error } = this.state;
+    const {page} = this.props;
+
+    const View = ({item}) => {
+        switch (page) {
+            case "House" :
+                return(
+                    <ItemDetails page={this.props.page} itemId={item.id} getData={this.gotService.getHouse}>
+                        <Field field="region" label="Region" />
+                        <Field field="words" label="Words" />
+                        <Field field="titles" label="Titles" />
+                        <Field field="currentLord" label="Current Lord" />
+                        <Field field="coatOfArms" label="Coat of Arms" />
+                    </ItemDetails>
+                );
+            case "Book" :
+                return(
+                    <ItemDetails page={this.props.page} itemId={item.id} getData={this.gotService.getBook}>
+                        <Field field="publisher" label="Publisher" />
+                        <Field field="numberOfPages" label="Number Of Pages" />
+                        <Field field="released" label="Released" />
+                    </ItemDetails>
+                );
+            default :
+                return(
+                    <ItemDetails page={this.props.page} itemId={item.id} getData={this.gotService.getCharacter}>
+                        <Field field="gender" label="Gender" />
+                        <Field field="born" label="Born" />
+                        <Field field="died" label="Died" />
+                        <Field field="culture" label="Culture" />
+                    </ItemDetails>
+                );
+        }
+    }
+
+
 
     const errorMesage = error ? <ErrorMessage /> : null;
     const spinner = loading ? <Spinner /> : null;
     const content = !(loading || error) ? (
-      <View char={char} />
+      <View item={item} />
     ) : null;
     return (
-        <RandomBlock className="rounded">
-          {errorMesage}
-          {spinner}
-          {content}
-        </RandomBlock>
+        <Row>
+            <Col lg={{ size: 5, offset: 0 }}>
+                <RandomBlock className="rounded">
+                    {errorMesage}
+                    {spinner}
+                    {content}
+                </RandomBlock>
+            </Col>
+        </Row>
+
     );
   }
 }
-
-const View = ({ char }) => {
-  const { name, gender, born, died, culture } = char;
-
-  return (
-    <>
-      <h4>Random Character: {name}</h4>
-      <ul className="list-group list-group-flush">
-        <li className="list-group-item d-flex justify-content-between">
-          <span className="term">Gender </span>
-          <span>{gender}</span>
-        </li>
-        <li className="list-group-item d-flex justify-content-between">
-          <span className="term">Born </span>
-          <span>{born}</span>
-        </li>
-        <li className="list-group-item d-flex justify-content-between">
-          <span className="term">Died </span>
-          <span>{died ? died : "Still alive"}</span>
-        </li>
-        <li className="list-group-item d-flex justify-content-between">
-          <Term>Culture </Term>
-          <span>{culture}</span>
-        </li>
-      </ul>
-    </>
-  );
-};

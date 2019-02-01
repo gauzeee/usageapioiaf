@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import styled from "styled-components";
+import Spinner from "../spinner";
 
 const Field = ({ item, field, label }) => {
   return (
@@ -26,6 +27,7 @@ export default class ItemDetails extends Component {
 
   state = {
     item: null,
+    error: false
   };
 
   updateItem() {
@@ -33,6 +35,13 @@ export default class ItemDetails extends Component {
     if (!itemId) return;
     getData(itemId).then(item => {
       this.setState({ item });
+    });
+  }
+
+  componentDidCatch(error, errorInfo) {
+    console.log(error, errorInfo);
+    this.setState({
+      error: true
     });
   }
 
@@ -49,17 +58,16 @@ export default class ItemDetails extends Component {
   render() {
     if (!this.state.item) {
       return (
-        <span className="select-error btn btn-warning">
-          Please, select something to show
-        </span>
+        <Spinner/>
       );
     }
-    console.log(this.state.item)
-        const {item} = this.state;
+      const {item} = this.state;
       const {name} = item;
+      const {page} = this.props;
+      const randomTitle = page ? `Random ${page}: ` : null
     return (
       <ItemDetailsBlock className="rounded">
-          <h4>{name}</h4>
+          <h4>{randomTitle}{name}</h4>
           <ul className="list-group list-group-flush">
               {
                   React.Children.map(this.props.children, (child) => {
