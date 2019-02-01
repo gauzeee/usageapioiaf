@@ -1,5 +1,5 @@
 import React from "react";
-import { Col, Row, Container } from "reactstrap";
+import { Col, Row } from "reactstrap";
 
 const RowBlock = ({ left, right }) => {
   return (

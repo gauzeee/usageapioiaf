@@ -54,13 +54,14 @@ export default class GotService {
   }
 
   _transformHouse(house) {
+
     return {
       name: house.name,
       region: house.region,
       words: house.words,
       titles: house.titles,
-      overlord: house.overlord,
-      ancestralWeapons: house.ancestralWeapons,
+      currentLord: house.currentLord,
+      coatOfArms: house.coatOfArms,
       id: house.url.split("/").reverse()[0]
     };
   }
