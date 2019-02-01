@@ -7,6 +7,7 @@ import CharacterPage from "../pages/characterPage";
 import BookPage from "../pages/bookPage";
 import HousePage from "../pages/housePage/housePage";
 import gotService from "../../services/gotService";
+import {BrowserRouter as Router, Route} from 'react-router-dom';
 
 export default class App extends React.Component {
 
@@ -76,10 +77,9 @@ export default class App extends React.Component {
 
     if (this.state.error) return <ErrorMessage />;
 
-    const currentPage = this.setCurrentPage().current;
-
     return (
-      <>
+      <Router>
+        <div className="app">
         <Container>
           <Header openPage={this.openPage}/>
         </Container>
@@ -91,9 +91,13 @@ export default class App extends React.Component {
           >
             {buttonText}
           </button>
-          {currentPage}
+          <Route path="/characters" component={CharacterPage}/>
+          <Route path="/books" component={BookPage}/>
+          <Route path="/houses" component={HousePage}/>
+
         </Container>
-      </>
+        </div>
+      </Router>
     );
   }
 }
