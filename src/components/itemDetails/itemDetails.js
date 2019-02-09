@@ -24,17 +24,18 @@ const ItemDetailsBlock = styled.div`
 `;
 
 export default class ItemDetails extends Component {
-
   state = {
     item: null,
+    loading: true,
     error: false
   };
 
   updateItem() {
     const { itemId, getData } = this.props;
     if (!itemId) return;
+    this.setState({ item: null, loading: true });
     getData(itemId).then(item => {
-      this.setState({ item });
+      this.setState({ item, loading: false });
     });
   }
 
@@ -56,25 +57,24 @@ export default class ItemDetails extends Component {
   }
 
   render() {
-    if (!this.state.item) {
-      return (
-        <Spinner/>
-      );
+    if (this.state.loading) {
+      return <Spinner />;
     }
-      const {item} = this.state;
-      const {name} = item;
-      const {page} = this.props;
-      const randomTitle = page ? `Random ${page}: ` : null
+    const { item } = this.state;
+    const { name } = item;
+    const { page } = this.props;
+    const randomTitle = page ? `Random ${page}: ` : null;
     return (
       <ItemDetailsBlock className="rounded">
-          <h4>{randomTitle}{name}</h4>
-          <ul className="list-group list-group-flush">
-              {
-                  React.Children.map(this.props.children, (child) => {
-                    return React.cloneElement(child, {item})
-                  })
-              }
-          </ul>
+        <h4>
+          {randomTitle}
+          {name}
+        </h4>
+        <ul className="list-group list-group-flush">
+          {React.Children.map(this.props.children, child => {
+            return React.cloneElement(child, { item });
+          })}
+        </ul>
       </ItemDetailsBlock>
     );
   }
